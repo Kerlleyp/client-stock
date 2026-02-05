@@ -15,12 +15,6 @@
     </form>
     <?php 
         session_start();
-
-        $nomeProduto = $_POST["nomeProduto"] ?? '';
-        $nomeMarca = $_POST["marcaProduto"] ?? '';
-        $quantidade = $_POST["quantidade"] ?? 0;
-        $preco = $_POST["preco"] ?? 0;
-    
         class Estoque {
 
             public $arrayEstoque = [];
@@ -37,12 +31,18 @@
         }
 
         //valido a session
-        if(isset($_SESSION['estoque'])) {
+        if(isset($_SESSION['estoque']) && $_SESSION['estoque'] instanceof Estoque) {
             $estoque = $_SESSION['estoque'];
         } else {
             $estoque = new Estoque();
         }
 
+
+        $nomeProduto = isset($_POST["nomeProduto"]) ? trim($_POST["nomeProduto"]) : '';
+        $nomeMarca = isset($_POST["marcaProduto"]) ? trim($_POST["marcaProduto"]) : '';;
+        $quantidade = $_POST["quantidade"] ?? 0;
+        $preco = $_POST["preco"] ?? 0;
+    
          // atualizar produto
         if(isset($_GET['index'])) {
             $index = $_GET['index'];
@@ -65,13 +65,25 @@
             exit;
         }
 
-        //Verifico se foi mandado corretamente o form
-        if(isset($_POST['adicionarEstoque'])) {
-            $estoque->adicionarProduto($nomeProduto, $nomeMarca, $preco, $quantidade);
-            $_SESSION['estoque'] = $estoque;
+        // Adicionar produto
+        if(isset($_POST['adicionarEstoque']) && $nomeProduto !== '' && $nomeMarca !== '') {
+            $existe = false;
+            foreach($estoque->arrayEstoque as $produto) {
+                if(strtolower($produto['nome']) === strtolower($nomeProduto) &&
+                    strtolower($produto['marca']) === strtolower($nomeMarca)) {
+                    $existe = true;
+                    break;
+                }
+            }
 
-            header("Location: estoque.php");
-            exit;
+            if(!$existe) {
+                $estoque->adicionarProduto($nomeProduto, $nomeMarca, $preco, $quantidade);
+                $_SESSION['estoque'] = $estoque;
+                header("Location: estoque.php");
+                exit;
+            } else {
+                echo "Produto e Marca já existem!";
+            }
         }
 
         //Procura o index do produto que sera removido
@@ -89,12 +101,12 @@
             echo 'Nome: '. $produtos['nome'] . '<br>' . 'Marca: ' . $produtos['marca'];
             echo '<form action="estoque.php?index='. $index .'" method="POST">
                     <label for="quantidade">Quantidade: '. $produtos['quantidade']. '</label><br>
-                    <input type="number" name="quantidade" id="quantidade"><br>
+                    <input type="number" name="quantidade" id="quantidade'.$index.'"><br>
                     <input type="submit" value="Adicionar"><br>
                 </form>';
             echo '<form action="estoque.php?index='. $index .'"method="POST">
                     <label for="preco">Preço: '. $produtos['preco'] .'</label><br>
-                    <input type="number" name="preco" id="preco"><br>
+                    <input type="number" name="preco" id="preco'. $index.'"><br>
                     <input type="submit" value="Adicionar">
                 </form>';
             echo ' <a href="?remover=' . $index . '" onclick="return confirm(\'Deseja realmente remover?\')">Remover</a><br><br>';
