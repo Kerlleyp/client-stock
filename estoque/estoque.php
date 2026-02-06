@@ -72,6 +72,7 @@
                 if(strtolower($produto['nome']) === strtolower($nomeProduto) &&
                     strtolower($produto['marca']) === strtolower($nomeMarca)) {
                     $existe = true;
+                    var_dump($produto['nome'], $produto['marca']);
                     break;
                 }
             }
