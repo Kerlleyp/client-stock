@@ -20,14 +20,20 @@
             public $arrayEstoque = [];
 
             public function adicionarProduto($nome, $marca, $preco, $quantidade) {
-                $this->arrayEstoque[] = [
-                    "nome" => $nome,
-                    "marca" => $marca,
-                    "quantidade" => $quantidade,
-                    "preco" => $preco
-                ];
-            }
+                $chave = strtolower(trim($nome) . '_' . trim($marca));
 
+                if (!isset($this->arrayEstoque[$chave])) {
+                    $this->arrayEstoque[$chave] = [
+                        "nome" => $nome,
+                        "marca" => $marca,
+                        "quantidade" => $quantidade,
+                        "preco" => $preco
+                    ];
+                    return true;
+                }
+
+                return false;
+            }
         }
 
         //valido a session
@@ -65,52 +71,44 @@
             exit;
         }
 
-        // Adicionar produto
-        if(isset($_POST['adicionarEstoque']) && $nomeProduto !== '' && $nomeMarca !== '') {
-            $existe = false;
-            foreach($estoque->arrayEstoque as $produto) {
-                if(strtolower($produto['nome']) === strtolower($nomeProduto) &&
-                    strtolower($produto['marca']) === strtolower($nomeMarca)) {
-                    $existe = true;
-                    var_dump($produto['nome'], $produto['marca']);
-                    break;
-                }
-            }
-
-            if(!$existe) {
-                $estoque->adicionarProduto($nomeProduto, $nomeMarca, $preco, $quantidade);
+        if (isset($_POST['adicionarEstoque']) && $nomeProduto !== '' && $nomeMarca !== '') {
+            if (!$estoque->adicionarProduto($nomeProduto, $nomeMarca, $preco, $quantidade)) {
+                echo "Produto e Marca já existem!";
+            } else {
                 $_SESSION['estoque'] = $estoque;
                 header("Location: estoque.php");
                 exit;
-            } else {
-                echo "Produto e Marca já existem!";
             }
         }
+
 
         //Procura o index do produto que sera removido
-        if(isset($_GET['remover'])){
-            $index = (int)$_GET['remover'];
+       if (isset($_GET['remover'])) {
+            $chave = $_GET['remover'];
 
-            if(isset($estoque->arrayEstoque[$index])){
-                unset($estoque->arrayEstoque[$index]);
-                $estoque->arrayEstoque = array_values($estoque->arrayEstoque); //organizar
+            if (isset($estoque->arrayEstoque[$chave])) {
+                unset($estoque->arrayEstoque[$chave]);
                 $_SESSION['estoque'] = $estoque;
             }
+
+            header("Location: estoque.php");
+            exit;
         }
+
         
-        foreach($estoque->arrayEstoque as $index => $produtos) {
+        foreach($estoque->arrayEstoque as $chave => $produtos) {
             echo 'Nome: '. $produtos['nome'] . '<br>' . 'Marca: ' . $produtos['marca'];
-            echo '<form action="estoque.php?index='. $index .'" method="POST">
+            echo '<form action="estoque.php?index='. $chave .'" method="POST">
                     <label for="quantidade">Quantidade: '. $produtos['quantidade']. '</label><br>
-                    <input type="number" name="quantidade" id="quantidade'.$index.'"><br>
+                    <input type="number" name="quantidade" id="quantidade'.$chave.'"><br>
                     <input type="submit" value="Adicionar"><br>
                 </form>';
-            echo '<form action="estoque.php?index='. $index .'"method="POST">
+            echo '<form action="estoque.php?index='. $chave .'"method="POST">
                     <label for="preco">Preço: '. $produtos['preco'] .'</label><br>
-                    <input type="number" name="preco" id="preco'. $index.'"><br>
+                    <input type="number" name="preco" id="preco'. $chave.'"><br>
                     <input type="submit" value="Adicionar">
                 </form>';
-            echo ' <a href="?remover=' . $index . '" onclick="return confirm(\'Deseja realmente remover?\')">Remover</a><br><br>';
+            echo ' <a href="?remover=' . $chave . '" onclick="return confirm(\'Deseja realmente remover?\')">Remover</a><br><br>';
         }
 
         $_SESSION['estoque'] = $estoque;
