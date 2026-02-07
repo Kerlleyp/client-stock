@@ -100,6 +100,9 @@ if (isset($_GET['remover'])) {
     <title>Estoque</title>
 </head>
 <body>
+    <header>
+        <a href="../clientes/cliente.php">Clientes</a>
+    </header>
 
 <h2>Adicionar Produto</h2>
 <form action="estoque.php" method="POST">
