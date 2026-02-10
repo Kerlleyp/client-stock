@@ -118,40 +118,40 @@ if (isset($_GET['remover'])) {
 </form>
 
 <?php
-// MENSAGEM DE ERRO
-if (!empty($_SESSION['msg'])) {
-    echo '<p style="color:red">' . $_SESSION['msg'] . '</p>';
-    unset($_SESSION['msg']);
-}
-
-// LISTA DE PRODUTOS
-if (!empty($estoque->arrayEstoque)) {
-    echo '<h2>Estoque Atual</h2>';
-
-    foreach ($estoque->arrayEstoque as $chave => $produto) {
-        echo "<strong>Nome:</strong> {$produto['nome']}<br>";
-        echo "<strong>Marca:</strong> {$produto['marca']}<br>";
-        echo "<strong>Quantidade:</strong> {$produto['quantidade']}<br>";
-        echo "<strong>Preço:</strong> R$ {$produto['preco']}<br>";
-
-        // Formulário para atualizar quantidade
-        echo "<form action='estoque.php?index={$chave}' method='POST'>
-                <label>Adicionar Quantidade:</label><br>
-                <input type='number' name='quantidade'><br>
-                <input type='submit' value='Atualizar Quantidade'>
-              </form>";
-
-        // Formulário para atualizar preço
-        echo "<form action='estoque.php?index={$chave}' method='POST'>
-                <label>Atualizar Preço:</label><br>
-                <input type='number' step='0.01' name='preco'><br>
-                <input type='submit' value='Atualizar Preço'>
-              </form>";
-
-        // Link para remover
-        echo "<a href='estoque.php?remover={$chave}' onclick=\"return confirm('Deseja realmente remover?')\">Remover</a><hr>";
+    // MENSAGEM DE ERRO
+    if (!empty($_SESSION['msg'])) {
+        echo '<p style="color:red">' . $_SESSION['msg'] . '</p>';
+        unset($_SESSION['msg']);
     }
-}
+
+    // LISTA DE PRODUTOS
+    if (!empty($estoque->arrayEstoque)) {
+        echo '<h2>Estoque Atual</h2>';
+
+        foreach ($estoque->arrayEstoque as $chave => $produto) {
+            echo "<strong>Nome:</strong> {$produto['nome']}<br>";
+            echo "<strong>Marca:</strong> {$produto['marca']}<br>";
+            echo "<strong>Quantidade:</strong> {$produto['quantidade']}<br>";
+            echo "<strong>Preço:</strong> R$ {$produto['preco']}<br>";
+
+            // Formulário para atualizar quantidade
+            echo "<form action='estoque.php?index={$chave}' method='POST'>
+                    <label>Adicionar Quantidade:</label><br>
+                    <input type='number' name='quantidade'><br>
+                    <input type='submit' value='Atualizar Quantidade'>
+                 </form>";
+
+            // Formulário para atualizar preço
+            echo "<form action='estoque.php?index={$chave}' method='POST'>
+                    <label>Atualizar Preço:</label><br>
+                    <input type='number' step='0.01' name='preco'><br>
+                    <input type='submit' value='Atualizar Preço'>
+                 </form>";
+
+            // Link para remover
+            echo "<a href='estoque.php?remover={$chave}' onclick=\"return confirm('Deseja realmente remover?')\">Remover</a><hr>";
+        }
+    }
 ?>
 </body>
 </html>

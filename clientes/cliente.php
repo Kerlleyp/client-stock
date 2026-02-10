@@ -5,24 +5,38 @@
     class Cliente {
         public $arrayCliente = [];
 
-        public function adicionarProduto($nome, $produto, $marca, $quantidade) {
-        $chave = strtolower(trim($nome) . '_' . trim($marca));
+        public function adicionarCliente($nome, $produto, $marca, $quantidade) {
+            $chave = strtolower(trim($nome));
 
-        if (!isset($this->arrayCliente[$chave])) {
-            $this->arrayCliente[$chave] = [
+            // Se cliente não existir, cria
+            if (!isset($this->arrayCliente[$chave])) {
+                $this->arrayCliente[$chave] = [
                 "nome" => $nome,
+                "produtos" => []
+            ];
+         }
+
+            // Adiciona produto ao cliente
+            $this->arrayCliente[$chave]['produtos'][] = [
                 "produto" => $produto,
                 "marca" => $marca,
-                "quantidade" => $quantidade,
+                "quantidade" => $quantidade
             ];
-            return true;
+
+        return true;
         }
+
+        public function removerCliente($chave) {
+            if (isset($this->arrayCliente[$chave])) {
+                unset($this->arrayCliente[$chave]);
+                return true;
+            }
         return false;
         }
     }
-    // CARREGAR ESTOQUE DA SESSION
+    // CARREGAR CLIENTE DA SESSION
     if (isset($_SESSION['cliente']) && $_SESSION['cliente'] instanceof Cliente) {
-        $estoque = $_SESSION['cliente'];
+        $clientes = $_SESSION['cliente'];
     } else {
         $clientes = new Cliente();
     }
@@ -31,6 +45,25 @@
     $nomeProduto = $_POST['nomeProduto'] ?? '';
     $nomeMarca   = $_POST['nomeMarca'] ?? '';
     $quantidade  = $_POST['quantidade'] ?? 0;
+
+    //Adicionar Cliente
+    if (isset($_POST['adicionarCliente']) && $nomeCliente !== '') {
+        $clientes->adicionarCliente($nomeCliente, $nomeProduto, $nomeMarca, $quantidade);
+        $_SESSION['cliente'] = $clientes;
+        header("Location: cliente.php");
+        exit;
+    }
+
+
+    // REMOVER PRODUTO
+    if (isset($_GET['remover'])) {
+        $chave = $_GET['remover'];
+
+        $clientes->removerCliente($chave);
+        $_SESSION['cliente'] = $clientes;
+        header("Location: cliente.php");
+        exit;
+    }
 
 ?>
 <!DOCTYPE html>
@@ -54,7 +87,30 @@
         <input type="text" name="nomeMarca" id="nomeMarca"><br>
         <label for="quantidade">Quantidade</label><br>
         <input type="number" name="quantidade" id="quantidade"><br><br>
-        <input type="submit" value="Adicionar Cliente">
+        <input type="submit" name="adicionarCliente" value="Adicionar Cliente">
     </form>
+
+<?php
+
+    foreach ($clientes->arrayCliente as $chave => $cliente) {
+        echo "<h2>{$cliente['nome']}</h2>";
+
+        echo "<ul>";
+    foreach ($cliente['produtos'] as $produto) {
+        echo "<li>
+                <strong>Produto:</strong> {$produto['produto']} <br>
+                <strong>Marca:</strong> {$produto['marca']} <br>
+                <strong>Quantidade:</strong> {$produto['quantidade']}
+              </li><br>";
+    }
+        echo "</ul>";
+
+        echo "<a href='cliente.php?remover={$chave}' 
+            onclick=\"return confirm('Deseja realmente remover?')\">
+            Remover Cliente
+             </a><hr>";
+    }
+
+?>
 </body>
 </html>
