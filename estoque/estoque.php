@@ -41,6 +41,29 @@ class Estoque {
         }
         return false;
     }
+
+    public function Buscar($produto, $marca, $quantidadeComprada) {
+
+        foreach ($this->arrayEstoque as &$item) {
+
+            if ($produto === $item['nome'] && $marca === $item['marca']) {
+
+                if ($item['quantidade'] >= $quantidadeComprada) {
+
+                    $preco = $item['preco'];
+
+                    // diminui do estoque
+                    $item['quantidade'] -= $quantidadeComprada;
+
+                    return $preco;
+                } else {
+                    return "Estoque insuficiente.";
+                }
+            }
+        }
+
+    return "Produto não encontrado.";
+    }
 }
 
 // CARREGAR ESTOQUE DA SESSION

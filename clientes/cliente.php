@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require_once 'estoque.php';
 
     //CLASS CLIENTE
     class Cliente {
@@ -45,6 +46,7 @@
     $nomeProduto = $_POST['nomeProduto'] ?? '';
     $nomeMarca   = $_POST['nomeMarca'] ?? '';
     $quantidade  = $_POST['quantidade'] ?? 0;
+    
 
     //Adicionar Cliente
     if (isset($_POST['adicionarCliente']) && $nomeCliente !== '') {
