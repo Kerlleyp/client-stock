@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once 'estoque.php';
+    //require_once __DIR__ . '/../estoque/estoque.php';
 
     //CLASS CLIENTE
     class Cliente {
@@ -59,7 +59,7 @@
 
     // REMOVER PRODUTO
     if (isset($_GET['remover'])) {
-        $chave = $_GET['remover'];
+        $chave = strtolower($_GET['remover']);
 
         $clientes->removerCliente($chave);
         $_SESSION['cliente'] = $clientes;
@@ -77,7 +77,7 @@
 </head>
 <body>
     <header>
-        <a href="../estoque/estoque.php">Estoque</a>
+        <a href="../estoque/index.php">Estoque</a>
     </header>
     <h2>Adicionar Cliente</h2>
     <form action="cliente.php" method="post">
