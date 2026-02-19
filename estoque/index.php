@@ -1,6 +1,6 @@
 <?php 
-    session_start();
     require_once __DIR__ . '/estoqueClass.php';
+    session_start();
     // CARREGAR ESTOQUE DA SESSION
     $estoque = $_SESSION['estoque'] ?? new Estoque();
 ?>
@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        <a href="../clientes/cliente.php">Clientes</a>
+        <a href="../clientes/clienteView.php">Clientes</a>
     </header>
 
 <h2>Adicionar Produto</h2>

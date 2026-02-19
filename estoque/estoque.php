@@ -17,7 +17,7 @@
             $_SESSION['msg'] = "Produto e Marca já existem!";
         } 
         $_SESSION['estoque'] = $estoque;
-        header("Location: estoque.php");
+        header("Location: index.php");
         exit;
     }
 
@@ -32,7 +32,7 @@
         );
 
         $_SESSION['estoque'] = $estoque;
-        header("Location: estoque.php");
+        header("Location: index.php");
         exit;
     }
 
@@ -42,6 +42,6 @@
 
         $estoque->removerProduto($chave);
         $_SESSION['estoque'] = $estoque;
-        header("Location: estoque.php");
+        header("Location: index.php");
         exit;
     }
