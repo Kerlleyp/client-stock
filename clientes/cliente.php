@@ -10,6 +10,7 @@
         $clientes = $_SESSION['cliente'];
     } else {
         $clientes = new Cliente();
+        $_SESSION['cliente'] = $clientes;
     }
 
     //Carrega Estoque
@@ -17,6 +18,7 @@
         $estoque = $_SESSION['estoque'];
     } else {
         $estoque = new Estoque();
+        $_SESSION['estoque'] = $estoque;
     }
 
     $nomeCliente = $_POST['nomeCliente'] ?? '';
@@ -26,7 +28,7 @@
     
 
     //Adicionar Cliente
-    if (isset($_POST['adicionarCliente']) && $nomeCliente !== '') {
+    if (isset($_POST['adicionarCliente']) && $nomeProduto !== '' && $nomeCliente !== '') {
         $preco = $estoque->Buscar($nomeProduto, $nomeMarca, $quantidade);
 
         $clientes->adicionarCliente($nomeCliente, $nomeProduto, $nomeMarca, $quantidade, $preco);

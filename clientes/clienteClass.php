@@ -3,7 +3,7 @@
         public $arrayCliente = [];
 
         public function adicionarCliente($nome, $produto, $marca, $quantidade, $preco) {
-            $chave = strtolower(trim($nome)) . '_' . uniqid();;
+            $chave = strtolower(trim($nome));
 
             // Se cliente não existir, cria
             if (!isset($this->arrayCliente[$chave])) {
