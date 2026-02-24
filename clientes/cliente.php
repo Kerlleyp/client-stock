@@ -29,9 +29,15 @@
 
     //Adicionar Cliente
     if (isset($_POST['adicionarCliente']) && $nomeProduto !== '' && $nomeCliente !== '') {
-        $preco = $estoque->Buscar($nomeProduto, $nomeMarca, $quantidade);
+       $preco = $estoque->Buscar($nomeProduto, $nomeMarca, $quantidade);
 
-        $clientes->adicionarCliente($nomeCliente, $nomeProduto, $nomeMarca, $quantidade, $preco);
+        if (is_numeric($preco)) {
+            $clientes->adicionarCliente($nomeCliente, $nomeProduto, $nomeMarca, $quantidade, $preco);
+            $_SESSION['cliente'] = $clientes;
+        } else {
+            echo $preco;
+            exit;
+        }
         $_SESSION['cliente'] = $clientes;
         header("Location: clienteView.php");
         exit;

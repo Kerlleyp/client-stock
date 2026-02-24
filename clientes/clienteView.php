@@ -2,7 +2,6 @@
     require_once __DIR__ . '/clienteClass.php';
     require_once __DIR__ . '/cliente.php';
 
-    //session_start();
     $clientes = $_SESSION['cliente'];
 ?>
 <!DOCTYPE html>
