@@ -2,8 +2,9 @@
     //Class Estoque
     require_once __DIR__ . '/../estoque/estoqueClass.php';
     
-    session_start();
     require_once __DIR__ . '/clienteClass.php';
+
+    session_start();
 
     // CARREGAR CLIENTE DA SESSION
     if (isset($_SESSION['cliente']) && $_SESSION['cliente'] instanceof Cliente) {

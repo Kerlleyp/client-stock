@@ -41,6 +41,12 @@
 
         public function Buscar($produto, $marca, $quantidadeComprada) {
 
+            $quantidadeComprada = (int) $quantidadeComprada;
+
+            if ($quantidadeComprada <= 0) {
+                return "Quantidade inválida.";
+            }
+
             foreach ($this->arrayEstoque as &$item) {
 
                 if ($produto === $item['nome'] && $marca === $item['marca']) {
@@ -49,16 +55,16 @@
 
                         $preco = $item['preco'];
 
-                        // diminui do estoque
                         $item['quantidade'] -= $quantidadeComprada;
 
                         return $preco;
+
                     } else {
                         return "Estoque insuficiente.";
                     }
                 }
             }
 
-        return "Produto não encontrado.";
+            return "Produto não encontrado.";
         }
     }
