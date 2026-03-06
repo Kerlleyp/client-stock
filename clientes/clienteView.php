@@ -30,6 +30,12 @@
 
 <?php
 
+    // MENSAGEM DE ERRO
+    if (!empty($_SESSION['msgCliente'])) {
+        echo '<p style="color:red">' . $_SESSION['msgCliente'] . '</p>';
+        unset($_SESSION['msgCliente']);
+    }
+
     foreach ($clientes->arrayCliente as $chave => $cliente) {
         echo "<h2>{$cliente['nome']}</h2>";
 
@@ -40,6 +46,10 @@
                 <strong>Marca:</strong> {$produto['marca']} <br>
                 <strong>Quantidade:</strong> {$produto['quantidade']}<br>
                 <strong>Preço:</strong> {$produto['preco']}
+                <a href='cliente.php?remover={$chave}' 
+                onclick=\"return confirm('Deseja realmente remover?')\">
+                Remover Cliente
+                </a>
               </li><br>";
     }
         echo "</ul>";

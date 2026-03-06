@@ -44,7 +44,10 @@
             $quantidadeComprada = (int) $quantidadeComprada;
 
             if ($quantidadeComprada <= 0) {
-                return "Quantidade inválida.";
+                $_SESSION['msgCliente'] = "Quantidade inválida.";
+                //$_SESSION['cliente'] = $clientes;
+                header("Location: clienteView.php");
+                exit;
             }
 
             foreach ($this->arrayEstoque as &$item) {
@@ -60,11 +63,15 @@
                         return $preco;
 
                     } else {
-                        return "Estoque insuficiente.";
+                        $_SESSION['msgCliente'] = "Estoque insuficiente.";
+                        header("Location: clienteView.php");
+                        exit;
                     }
                 }
             }
 
-            return "Produto não encontrado.";
+            $_SESSION['msgCliente'] = "Produto não encontrado.";
+            header("Location: clienteView.php");
+            exit;
         }
     }
