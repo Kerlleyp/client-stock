@@ -40,15 +40,15 @@
         echo "<h2>{$cliente['nome']}</h2>";
 
         echo "<ul>";
-    foreach ($cliente['produtos'] as $produto) {
+    foreach ($cliente['produtos'] as $indiceProduto => $produto) {
         echo "<li>
                 <strong>Produto:</strong> {$produto['produto']} <br>
                 <strong>Marca:</strong> {$produto['marca']} <br>
                 <strong>Quantidade:</strong> {$produto['quantidade']}<br>
                 <strong>Preço:</strong> {$produto['preco']}
-                <a href='cliente.php?remover={$chave}' 
+                <a href='cliente.php?removerProduto={$chave}&produto={$indiceProduto}' 
                 onclick=\"return confirm('Deseja realmente remover?')\">
-                Remover Cliente
+                Remover Produto
                 </a>
               </li><br>";
     }

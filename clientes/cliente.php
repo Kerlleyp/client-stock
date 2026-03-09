@@ -44,6 +44,16 @@
         exit;
     }
 
+    if(isset($_GET['removerProduto'])) {
+        $cliente = $_GET['removerProduto'];
+        $produto = $_GET['produto'];
+
+        unset($_SESSION['cliente']->arrayCliente[$cliente]['produtos'][$produto]);
+
+        
+        header("Location: clienteView.php");
+        exit;
+    }
 
     // REMOVER PRODUTO
     if (isset($_GET['remover'])) {
