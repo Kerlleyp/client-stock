@@ -40,19 +40,25 @@
         echo "<h2>{$cliente['nome']}</h2>";
 
         echo "<ul>";
-    foreach ($cliente['produtos'] as $indiceProduto => $produto) {
-        echo "<li>
-                <strong>Produto:</strong> {$produto['produto']} <br>
-                <strong>Marca:</strong> {$produto['marca']} <br>
-                <strong>Quantidade:</strong> {$produto['quantidade']}<br>
-                <strong>Preço:</strong> {$produto['preco']}
-                <a href='cliente.php?removerProduto={$chave}&produto={$indiceProduto}' 
-                onclick=\"return confirm('Deseja realmente remover?')\">
-                Remover Produto
-                </a>
-              </li><br>";
-    }
+            foreach ($cliente['produtos'] as $indiceProduto => $produto) {
+                $total = $produto['quantidade'] * $produto['preco'];
+                echo "<li>
+                    <strong>Produto:</strong> {$produto['produto']} <br>
+                    <strong>Marca:</strong> {$produto['marca']} <br>
+                    <strong>Quantidade:</strong> {$produto['quantidade']}<br>
+                    <strong>Preço:</strong> $total reais<br>
+                    <a href='cliente.php?removerProduto={$chave}&produto={$indiceProduto}' 
+                    onclick=\"return confirm('Deseja realmente remover?')\">
+                    Remover Produto
+                    </a>
+                </li><br>";
+            }
         echo "</ul>";
+        $totalDaCompra = 0;
+        foreach($cliente['produtos'] as $precoProduto){
+            $totalDaCompra += $precoProduto['total'];
+        }
+        echo "Total das Compras : <strong> $totalDaCompra reais </strong><br>";
 
         echo "<a href='cliente.php?remover={$chave}' 
             onclick=\"return confirm('Deseja realmente remover?')\">

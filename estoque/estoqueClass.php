@@ -39,6 +39,7 @@
             return false;
         }
 
+        // BUSCA O PRODUTO NO ESTOQUE
         public function Buscar($produto, $marca, $quantidadeComprada) {
 
             $quantidadeComprada = (int) $quantidadeComprada;
@@ -58,9 +59,11 @@
 
                         $preco = $item['preco'];
 
+                        $total = $preco * $quantidadeComprada;
+
                         $item['quantidade'] -= $quantidadeComprada;
 
-                        return $preco;
+                        return $total;
 
                     } else {
                         $_SESSION['msgCliente'] = "Estoque insuficiente.";

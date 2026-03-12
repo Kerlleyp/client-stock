@@ -33,7 +33,15 @@
        $preco = $estoque->Buscar($nomeProduto, $nomeMarca, $quantidade);
 
         if (is_numeric($preco)) {
-            $clientes->adicionarCliente($nomeCliente, $nomeProduto, $nomeMarca, $quantidade, $preco);
+            if ($clientes->produtoExiste($nomeCliente, $nomeProduto)) {
+                $clientes->somarQuantidade($nomeCliente, $nomeProduto, $quantidade);
+                header("Location: clienteView.php");
+                //exit;
+            } else {
+                $clientes->adicionarCliente($nomeCliente, $nomeProduto, $nomeMarca, $quantidade, $preco);
+                header("Location: clienteView.php");
+                //exit;
+            }
             $_SESSION['cliente'] = $clientes;
         } else {
             echo $preco;
@@ -44,6 +52,7 @@
         exit;
     }
 
+    // REMOVER PRODUTO
     if(isset($_GET['removerProduto'])) {
         $cliente = $_GET['removerProduto'];
         $produto = $_GET['produto'];
@@ -55,7 +64,7 @@
         exit;
     }
 
-    // REMOVER PRODUTO
+    // REMOVER CLIENTE
     if (isset($_GET['remover'])) {
         $chave = strtolower($_GET['remover']);
 
